@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ayucare | Live Video Consultation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://meet.jit.si/external_api.js"></script>
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex flex-col justify-between">
+
+  <!-- Header Navigation -->
+  <nav class="w-full bg-slate-800 border-b border-slate-700 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <svg class="w-8 h-8 text-teal-400" viewBox="0 0 32 32" fill="none">
+          <rect x="4" y="12" width="24" height="8" rx="2" fill="currentColor" opacity="0.2" />
+          <rect x="12" y="4" width="8" height="24" rx="2" fill="currentColor" />
+        </svg>
+        <span class="text-xl font-bold text-white">Ayucare Telehealth</span>
+      </a>
+      <div class="flex items-center gap-6 text-sm font-medium">
+        <a href="index.html" class="text-slate-300 hover:text-teal-400">Home</a>
+        <a href="doctor.html" class="text-slate-300 hover:text-teal-400">Doctors</a>
+        <a href="ambulance.html" class="text-slate-300 hover:text-teal-400">Ambulance</a>
+        <a href="medicine.html" class="text-slate-300 hover:text-teal-400">Pharmacy</a>
+        <a href="video.html" class="text-teal-400 font-bold">Video Consult</a>
+        <a href="ayucare-ai/chatbot.html" class="text-slate-300 hover:text-teal-400">AI Assistant</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Video Consult Workspace -->
+  <main class="max-w-5xl mx-auto w-full px-4 py-8 flex-1 flex flex-col items-center justify-center">
+    
+    <div class="w-full bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col min-h-[600px]">
+      
+      <!-- Top Control Bar -->
+      <div class="bg-slate-800 p-4 border-b border-slate-700 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="w-3 h-3 bg-green-500 rounded-full animate-ping"></span>
+          <div>
+            <h2 class="font-bold text-base text-white">🩺 Ayucare Live Tele-Consultation</h2>
+            <p class="text-xs text-slate-400">Appointment Code: <span id="appointmentId" class="text-teal-400 font-bold">Not Started</span></p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 text-sm font-mono bg-slate-900 px-4 py-2 rounded-xl border border-slate-700">
+          <span>⏳ Call Duration:</span>
+          <span id="time" class="text-teal-400 font-bold">00:00</span>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex items-center gap-2">
+          <select id="doctorSelect" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs px-3 py-2.5 rounded-lg focus:outline-none focus:border-teal-500">
+            <option value="Dr. Rahul Sharma (Physician)">Dr. Rahul Sharma (Physician)</option>
+            <option value="Dr. Neha Verma (Gynecologist)">Dr. Neha Verma (Gynecologist)</option>
+            <option value="Dr. Amit Singh (Orthopedic)">Dr. Amit Singh (Orthopedic)</option>
+            <option value="Dr. Vikram Patel (Cardiologist)">Dr. Vikram Patel (Cardiologist)</option>
+          </select>
+
+          <button id="startBtn" onclick="startCall()" class="bg-teal-600 hover:bg-teal-500 text-white font-bold px-4 py-2.5 rounded-lg text-xs transition-colors shadow-md flex items-center gap-1.5">
+            <span>📹 Start Video Call</span>
+          </button>
+
+          <a href="tel:+919569141861" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2.5 rounded-lg text-xs transition-colors shadow-md flex items-center gap-1">
+            <span>📞 Call 9569141861</span>
+          </a>
+          
+          <button id="endBtn" onclick="endCall()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-4 py-2.5 rounded-lg text-xs transition-colors shadow-md hidden">
+            <span>⏹ End Consultation</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Video Container Frame -->
+      <div id="meet" class="flex-1 bg-slate-950 flex items-center justify-center min-h-[480px]">
+        <div id="placeholder" class="text-center p-8 text-slate-400">
+          <div class="text-6xl mb-4">👨‍⚕️💬</div>
+          <h3 class="text-xl font-bold text-white mb-2">Ready to Start Video Consultation</h3>
+          <p class="text-sm max-w-md mx-auto mb-6 text-slate-400">Select a specialist doctor above and click "Start Video Call" for direct WebRTC consultation.</p>
+          <a href="tel:+919569141861" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-teal-400 border border-teal-500/30 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors">
+            <span>📞 Direct Hotline: +91 9569141861</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800">
+    © 2026 Ayucare Telehealth • Jitsi Meet WebRTC Video Encryption Active • Hotline: 9569141861
+  </footer>
+
+  <script>
+    let api = null;
+    let timerInterval = null;
+    let seconds = 0;
+
+    function generateRoom() {
+      return "Ayucare_Consult_" + Math.random().toString(36).substring(2, 9);
+    }
+
+    function generateAppointmentID() {
+      return "APT-VID-" + Math.floor(1000 + Math.random() * 9000);
+    }
+
+    function startCall() {
+      const docName = document.getElementById("doctorSelect").value;
+      document.getElementById("appointmentId").innerText = generateAppointmentID();
+      
+      const placeholder = document.getElementById("placeholder");
+      if (placeholder) placeholder.style.display = "none";
+
+      document.getElementById("startBtn").classList.add("hidden");
+      document.getElementById("endBtn").classList.remove("hidden");
+
+      const domain = "meet.jit.si";
+      const options = {
+        roomName: generateRoom(),
+        width: "100%",
+        height: "100%",
+        parentNode: document.querySelector('#meet'),
+        userInfo: {
+          displayName: "Patient (Ayucare Client)"
+        }
+      };
+
+      if (api) {
+        api.dispose();
+      }
+
+      api = new JitsiMeetExternalAPI(domain, options);
+      startTimer();
+    }
+
+    function endCall() {
+      if (api) {
+        api.dispose();
+        api = null;
+      }
+      clearInterval(timerInterval);
+      seconds = 0;
+      document.getElementById("time").innerText = "00:00";
+      document.getElementById("appointmentId").innerText = "Not Started";
+      
+      const meetFrame = document.querySelector('#meet');
+      meetFrame.innerHTML = `
+        <div id="placeholder" class="text-center p-8 text-slate-400">
+          <div class="text-5xl mb-3">✅</div>
+          <h3 class="text-xl font-bold text-white mb-2">Video Consultation Completed</h3>
+          <p class="text-sm max-w-md mx-auto mb-6 text-slate-400">Digital prescription and details sent to WhatsApp (95914181).</p>
+          <button onclick="location.reload()" class="bg-teal-600 hover:bg-teal-500 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">
+            Start New Session
+          </button>
+        </div>
+      `;
+
+      document.getElementById("startBtn").classList.remove("hidden");
+      document.getElementById("endBtn").classList.add("hidden");
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      seconds = 0;
+      timerInterval = setInterval(() => {
+        seconds++;
+        let mins = Math.floor(seconds / 60);
+        let secs = seconds % 60;
+        document.getElementById("time").innerText =
+          String(mins).padStart(2, '0') + ":" +
+          String(secs).padStart(2, '0');
+      }, 1000);
+    }
+  </script>
+
+  <script src="ayucare-ai/chatbot-widget.js"></script>
+</body>
+</html>

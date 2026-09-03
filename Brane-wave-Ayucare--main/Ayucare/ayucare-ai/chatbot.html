@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ayucare AI Health Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col justify-between text-slate-800">
+
+  <!-- Header / Navbar -->
+  <nav class="w-full bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="../index.html" class="flex items-center gap-2">
+        <svg class="w-8 h-8 text-teal-600" viewBox="0 0 32 32" fill="none">
+          <rect x="4" y="12" width="24" height="8" rx="2" fill="currentColor" opacity="0.2" />
+          <rect x="12" y="4" width="8" height="24" rx="2" fill="currentColor" />
+        </svg>
+        <span class="text-xl font-bold text-slate-800">Ayucare AI</span>
+      </a>
+      <div class="flex items-center gap-4 text-sm font-medium">
+        <a href="../index.html" class="text-slate-600 hover:text-teal-600">Home</a>
+        <a href="../doctor.html" class="text-slate-600 hover:text-teal-600">Doctors</a>
+        <a href="../ambulance.html" class="text-slate-600 hover:text-teal-600">Ambulance</a>
+        <a href="../medicine.html" class="text-slate-600 hover:text-teal-600">Pharmacy</a>
+        <a href="../video.html" class="text-slate-600 hover:text-teal-600">Video Consult</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Chatbot Experience -->
+  <main class="max-w-3xl mx-auto w-full px-4 py-8 flex-1 flex flex-col">
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-xl flex flex-col flex-1 overflow-hidden h-[680px]">
+      
+      <!-- Top Banner with Language Selector -->
+      <div class="bg-gradient-to-r from-teal-600 to-cyan-600 text-white p-4 flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl">
+            🩺
+          </div>
+          <div>
+            <h2 class="font-bold text-lg leading-tight">Ayucare Multilingual AI Assistant</h2>
+            <p class="text-xs text-teal-100">Powered by Sarvam AI • Select Language & Speak</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Language Selector -->
+          <select id="chat-lang-select" class="bg-white/20 text-white border border-white/40 text-xs px-3 py-1.5 rounded-xl font-medium focus:outline-none cursor-pointer">
+            <option value="Hinglish" class="bg-slate-900 text-white">🌐 Hinglish</option>
+            <option value="Hindi" class="bg-slate-900 text-white">🇮🇳 Hindi (हिंदी)</option>
+            <option value="English" class="bg-slate-900 text-white">🇬🇧 English</option>
+            <option value="Bengali" class="bg-slate-900 text-white">Bengali (বাংলা)</option>
+            <option value="Marathi" class="bg-slate-900 text-white">Marathi (मराठी)</option>
+            <option value="Tamil" class="bg-slate-900 text-white">Tamil (தமிழ்)</option>
+            <option value="Telugu" class="bg-slate-900 text-white">Telugu (తెలుగు)</option>
+            <option value="Gujarati" class="bg-slate-900 text-white">Gujarati (ગુજરાતી)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Messages Area -->
+      <div id="chat-messages" class="flex-1 p-5 overflow-y-auto bg-slate-50 space-y-4">
+        <!-- Initial bot message -->
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs font-bold">
+            AI
+          </div>
+          <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none text-slate-800 text-sm max-w-[85%] shadow-sm">
+            <p class="font-semibold text-teal-700 mb-1">Namaste! 🙏 Welcome to Ayucare AI</p>
+            <p>Main Sarvam AI medical assistant hu. Aap apni bhasha select karke symptoms batayein ya Mic button se bolkar question puchein.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="px-4 py-2 bg-white border-t border-slate-100 flex items-center gap-2 overflow-x-auto text-xs">
+        <span class="text-slate-400 font-medium whitespace-nowrap">Suggested:</span>
+        <button onclick="sendQuickPrompt('Mujhe bukhar aur gale me dard hai')" class="bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 px-3 py-1.5 rounded-full border border-slate-200 transition-colors whitespace-nowrap">
+          🤒 Fever & Throat Pain
+        </button>
+        <button onclick="sendQuickPrompt('Doctor appointment kaise book karein?')" class="bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 px-3 py-1.5 rounded-full border border-slate-200 transition-colors whitespace-nowrap">
+          👨‍⚕️ Book Specialist
+        </button>
+        <button onclick="sendQuickPrompt('Emergency ambulance 9569141861')" class="bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 px-3 py-1.5 rounded-full border border-slate-200 transition-colors whitespace-nowrap">
+          🚑 Emergency Dispatch
+        </button>
+        <button onclick="sendQuickPrompt('Paracetamol 500mg dosage')" class="bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 px-3 py-1.5 rounded-full border border-slate-200 transition-colors whitespace-nowrap">
+          💊 Medicine Dosage
+        </button>
+      </div>
+
+      <!-- Input Area -->
+      <form onsubmit="handleSend(event)" class="p-4 bg-white border-t border-slate-200 flex items-center gap-3">
+        <button type="button" id="mic-btn" onclick="toggleVoiceInput()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 w-11 h-11 rounded-xl flex items-center justify-center border border-slate-200 transition-colors text-lg" title="Speak Input">
+          🎙️
+        </button>
+
+        <input type="text" id="user-input" placeholder="Describe your symptoms or ask a health question..." required class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-teal-500 focus:bg-white transition-all">
+        
+        <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white font-medium px-6 py-3 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-md shadow-teal-600/20">
+          <span>Send</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </form>
+
+    </div>
+  </main>
+
+  <footer class="text-center py-4 text-xs text-slate-400 border-t border-slate-200 bg-white">
+    © 2026 Ayucare Healthcare • Sarvam AI Assistant • For medical emergencies call 108 or 9569141861 immediately.
+  </footer>
+
+  <script>
+    function sendQuickPrompt(prompt) {
+      document.getElementById('user-input').value = prompt;
+      handleSend(new Event('submit'));
+    }
+
+    let isListening = false;
+    let recognition = null;
+
+    function toggleVoiceInput() {
+      const micBtn = document.getElementById('mic-btn');
+      const input = document.getElementById('user-input');
+
+      if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+        alert("Voice input browser support needed.");
+        return;
+      }
+
+      if (isListening) {
+        if (recognition) recognition.stop();
+        isListening = false;
+        micBtn.classList.remove('bg-red-500', 'text-white');
+        return;
+      }
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      const lang = document.getElementById('chat-lang-select').value;
+      recognition.lang = lang === 'Hindi' ? 'hi-IN' : 'en-IN';
+
+      recognition.onstart = function() {
+        isListening = true;
+        micBtn.classList.add('bg-red-500', 'text-white');
+        input.placeholder = "Listening... Speak now 🎙️";
+      };
+
+      recognition.onresult = function(event) {
+        input.value = event.results[0][0].transcript;
+        micBtn.classList.remove('bg-red-500', 'text-white');
+        isListening = false;
+        input.placeholder = "Describe symptoms...";
+        handleSend(new Event('submit'));
+      };
+
+      recognition.onerror = function() {
+        micBtn.classList.remove('bg-red-500', 'text-white');
+        isListening = false;
+        input.placeholder = "Describe symptoms...";
+      };
+
+      recognition.start();
+    }
+
+    async function handleSend(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('user-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const container = document.getElementById('chat-messages');
+      const selectedLang = document.getElementById('chat-lang-select').value;
+
+      // User Message UI
+      const userDiv = document.createElement('div');
+      userDiv.className = 'flex items-start justify-end gap-3';
+      userDiv.innerHTML = `
+        <div class="bg-teal-600 text-white p-4 rounded-2xl rounded-tr-none text-sm max-w-[85%] shadow-sm">
+          ${text}
+        </div>
+      `;
+      container.appendChild(userDiv);
+      input.value = '';
+      container.scrollTop = container.scrollHeight;
+
+      // Loading UI
+      const botDiv = document.createElement('div');
+      botDiv.className = 'flex items-start gap-3';
+      botDiv.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs font-bold">
+          AI
+        </div>
+        <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none text-slate-600 text-sm max-w-[85%] shadow-sm flex items-center gap-2">
+          <span class="w-2 h-2 bg-teal-500 rounded-full animate-ping"></span>
+          <span>Ayucare AI is responding in ${selectedLang}...</span>
+        </div>
+      `;
+      container.appendChild(botDiv);
+      container.scrollTop = container.scrollHeight;
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, language: selectedLang })
+        });
+        const data = await response.json();
+
+        botDiv.querySelector('.bg-white').innerHTML = `
+          <div class="text-slate-800 space-y-2 whitespace-pre-wrap">${data.reply}</div>
+        `;
+      } catch (err) {
+        botDiv.querySelector('.bg-white').innerHTML = `
+          <div class="text-slate-800">Swasthya salah: Kripya hydrated rahein, aaram karein aur zarurat par hamare doctors se sampark karein.</div>
+        `;
+      }
+      container.scrollTop = container.scrollHeight;
+    }
+  </script>
+</body>
+</html>

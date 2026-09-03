@@ -1,0 +1,304 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body{
+  background:#f4f7f6;
+  color:#1f2937;
+}
+
+/* HERO */
+.hero{
+  background:#065f46;
+  color:white;
+  padding:90px 20px;
+  text-align:center;
+}
+
+.hero h1{
+  font-size:42px;
+  margin-bottom:12px;
+}
+
+.hero p{
+  font-size:16px;
+  max-width:600px;
+  margin:auto;
+  opacity:0.9;
+}
+
+/* CONTAINER */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:60px 20px;
+}
+
+/* SERVICES */
+.services{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  margin-bottom:70px;
+}
+
+.service-card{
+  background:white;
+  padding:35px;
+  border-radius:18px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.service-card h2{
+  font-size:24px;
+  margin-bottom:14px;
+}
+
+.service-card p{
+  font-size:15px;
+  color:#555;
+  margin-bottom:24px;
+  line-height:1.6;
+}
+
+/* BUTTONS */
+.btn{
+  width:100%;
+  padding:15px;
+  font-size:16px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.btn.danger{
+  background:#dc2626;
+  color:white;
+}
+
+.btn.safe{
+  background:#059669;
+  color:white;
+}
+
+.btn:hover{
+  opacity:0.9;
+}
+
+/* WHY */
+.why{
+  margin-bottom:70px;
+}
+
+.why h3{
+  font-size:26px;
+  margin-bottom:20px;
+}
+
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:25px;
+}
+
+.why-grid div{
+  background:white;
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+}
+
+.why-grid strong{
+  display:block;
+  color:#065f46;
+  font-size:16px;
+  margin-bottom:6px;
+}
+
+.why-grid span{
+  font-size:13px;
+  color:#555;
+}
+
+/* STEPS */
+.steps h3{
+  font-size:26px;
+  margin-bottom:15px;
+}
+
+.steps ol{
+  padding-left:20px;
+  font-size:15px;
+  color:#555;
+  line-height:1.8;
+}
+
+/* FOOTER */
+.footer{
+  background:white;
+  border-top:1px solid #e5e7eb;
+  text-align:center;
+  padding:18px;
+  font-size:13px;
+  color:#666;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .services{
+    grid-template-columns:1fr;
+  }
+
+  .why-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero h1{
+    font-size:32px;
+  }
+}
+
+
+/* EMERGENCY NUMBERS */
+.emergency-numbers{
+  margin-bottom:70px;
+}
+
+.emergency-numbers h3{
+  font-size:26px;
+  margin-bottom:20px;
+}
+
+.numbers-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.number-card{
+  background:white;
+  padding:22px;
+  border-radius:14px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+}
+
+.number-card strong{
+  display:block;
+  font-size:26px;
+  color:#b91c1c;
+  margin-bottom:6px;
+}
+
+.number-card span{
+  font-size:13px;
+  color:#555;
+}
+
+/* responsive */
+@media(max-width:900px){
+  .numbers-grid{
+    grid-template-columns:1fr;
+  }
+}
+/* ================= MODAL ================= */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close:hover {
+  color: #000;
+}
+
+.modal-content h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #065f46;
+  clear: both;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-content input,
+.modal-content textarea {
+  padding: 12px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+  outline: none;
+  border-color: #065f46;
+  box-shadow: 0 0 0 3px rgba(6, 95, 70, 0.1);
+}
+
+.modal-content button[type="submit"] {
+  background: #dc2626;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s ease;
+}
+
+.modal-content button[type="submit"]:hover {
+  background: #b91c1c;
+}

@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: ayucare-healthcare
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: node server.js
+    envVars:
+      - key: SARVAM_API_KEY
+        value: sk_uvpqaay4_TOrjPEvNceIWLDCsb3fFSQun
