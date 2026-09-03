@@ -15,6 +15,6 @@ export default defineConfig({
   },
 
   preview: {
-    allowedHosts: ['ayucare-main.onrender.com']
+    allowedHosts: ['new-ayucare.onrender.com']
   }
 });
